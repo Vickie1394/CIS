@@ -36,8 +36,9 @@
             this.loginbtn = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.btnAppointment = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Deletebtn = new System.Windows.Forms.Button();
-            this.Updatebtn = new System.Windows.Forms.Button();
             this.Insertbtn = new System.Windows.Forms.Button();
             this.comboBoxBlood = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -52,10 +53,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.buttonDelete = new System.Windows.Forms.Button();
-            this.buttonUpdate = new System.Windows.Forms.Button();
             this.buttonInsert = new System.Windows.Forms.Button();
-            this.textBoxSpeciallity = new System.Windows.Forms.TextBox();
+            this.textBoxSpeciality = new System.Windows.Forms.TextBox();
             this.textBoxAddress = new System.Windows.Forms.TextBox();
             this.textBoxEmail = new System.Windows.Forms.TextBox();
             this.textBoxPhoneNo = new System.Windows.Forms.TextBox();
@@ -67,15 +66,18 @@
             this.label7 = new System.Windows.Forms.Label();
             this.radioButtondoctor = new System.Windows.Forms.RadioButton();
             this.radioButtonNurse = new System.Windows.Forms.RadioButton();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabPage2.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(38, 16);
+            this.label1.Location = new System.Drawing.Point(22, 10);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(55, 13);
             this.label1.TabIndex = 0;
@@ -84,7 +86,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(38, 69);
+            this.label2.Location = new System.Drawing.Point(24, 32);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 13);
             this.label2.TabIndex = 1;
@@ -92,7 +94,7 @@
             // 
             // Exitbtn
             // 
-            this.Exitbtn.Location = new System.Drawing.Point(427, 56);
+            this.Exitbtn.Location = new System.Drawing.Point(684, 69);
             this.Exitbtn.Name = "Exitbtn";
             this.Exitbtn.Size = new System.Drawing.Size(75, 26);
             this.Exitbtn.TabIndex = 2;
@@ -102,21 +104,21 @@
             // 
             // textPassword
             // 
-            this.textPassword.Location = new System.Drawing.Point(185, 69);
+            this.textPassword.Location = new System.Drawing.Point(133, 29);
             this.textPassword.Name = "textPassword";
             this.textPassword.Size = new System.Drawing.Size(100, 20);
             this.textPassword.TabIndex = 3;
             // 
             // textUsername
             // 
-            this.textUsername.Location = new System.Drawing.Point(185, 16);
+            this.textUsername.Location = new System.Drawing.Point(133, 3);
             this.textUsername.Name = "textUsername";
             this.textUsername.Size = new System.Drawing.Size(100, 20);
             this.textUsername.TabIndex = 4;
             // 
             // loginbtn
             // 
-            this.loginbtn.Location = new System.Drawing.Point(427, 27);
+            this.loginbtn.Location = new System.Drawing.Point(308, 17);
             this.loginbtn.Name = "loginbtn";
             this.loginbtn.Size = new System.Drawing.Size(75, 23);
             this.loginbtn.TabIndex = 5;
@@ -136,8 +138,9 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.btnAppointment);
+            this.tabPage1.Controls.Add(this.dataGridView1);
             this.tabPage1.Controls.Add(this.Deletebtn);
-            this.tabPage1.Controls.Add(this.Updatebtn);
             this.tabPage1.Controls.Add(this.Insertbtn);
             this.tabPage1.Controls.Add(this.comboBoxBlood);
             this.tabPage1.Controls.Add(this.label9);
@@ -159,25 +162,34 @@
             this.tabPage1.Text = "Add Patients Details";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // btnAppointment
+            // 
+            this.btnAppointment.Location = new System.Drawing.Point(435, 219);
+            this.btnAppointment.Name = "btnAppointment";
+            this.btnAppointment.Size = new System.Drawing.Size(75, 23);
+            this.btnAppointment.TabIndex = 19;
+            this.btnAppointment.Text = "Appointment";
+            this.btnAppointment.UseVisualStyleBackColor = true;
+            this.btnAppointment.Click += new System.EventHandler(this.btnAppointment_Click);
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToOrderColumns = true;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(320, 6);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(282, 150);
+            this.dataGridView1.TabIndex = 18;
+            // 
             // Deletebtn
             // 
-            this.Deletebtn.Location = new System.Drawing.Point(444, 230);
+            this.Deletebtn.Location = new System.Drawing.Point(277, 230);
             this.Deletebtn.Name = "Deletebtn";
             this.Deletebtn.Size = new System.Drawing.Size(75, 23);
             this.Deletebtn.TabIndex = 15;
             this.Deletebtn.Text = "Delete";
             this.Deletebtn.UseVisualStyleBackColor = true;
             this.Deletebtn.Click += new System.EventHandler(this.Deletebtn_Click);
-            // 
-            // Updatebtn
-            // 
-            this.Updatebtn.Location = new System.Drawing.Point(306, 230);
-            this.Updatebtn.Name = "Updatebtn";
-            this.Updatebtn.Size = new System.Drawing.Size(75, 23);
-            this.Updatebtn.TabIndex = 14;
-            this.Updatebtn.Text = "Update";
-            this.Updatebtn.UseVisualStyleBackColor = true;
-            this.Updatebtn.Click += new System.EventHandler(this.Updatebtn_Click);
             // 
             // Insertbtn
             // 
@@ -191,7 +203,13 @@
             // 
             // comboBoxBlood
             // 
+            this.comboBoxBlood.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxBlood.FormattingEnabled = true;
+            this.comboBoxBlood.Items.AddRange(new object[] {
+            "A",
+            "B",
+            "AB",
+            "O"});
             this.comboBoxBlood.Location = new System.Drawing.Point(139, 191);
             this.comboBoxBlood.Name = "comboBoxBlood";
             this.comboBoxBlood.Size = new System.Drawing.Size(121, 21);
@@ -208,8 +226,12 @@
             // 
             // comboBoxGender
             // 
+            this.comboBoxGender.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxGender.ForeColor = System.Drawing.SystemColors.WindowFrame;
             this.comboBoxGender.FormattingEnabled = true;
+            this.comboBoxGender.Items.AddRange(new object[] {
+            "Female",
+            "Male"});
             this.comboBoxGender.Location = new System.Drawing.Point(125, 135);
             this.comboBoxGender.Name = "comboBoxGender";
             this.comboBoxGender.Size = new System.Drawing.Size(121, 21);
@@ -233,7 +255,7 @@
             // 
             this.textTreatment.Location = new System.Drawing.Point(114, 109);
             this.textTreatment.Name = "textTreatment";
-            this.textTreatment.Size = new System.Drawing.Size(300, 20);
+            this.textTreatment.Size = new System.Drawing.Size(190, 20);
             this.textTreatment.TabIndex = 7;
             // 
             // textEmail
@@ -290,10 +312,8 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.buttonDelete);
-            this.tabPage2.Controls.Add(this.buttonUpdate);
             this.tabPage2.Controls.Add(this.buttonInsert);
-            this.tabPage2.Controls.Add(this.textBoxSpeciallity);
+            this.tabPage2.Controls.Add(this.textBoxSpeciality);
             this.tabPage2.Controls.Add(this.textBoxAddress);
             this.tabPage2.Controls.Add(this.textBoxEmail);
             this.tabPage2.Controls.Add(this.textBoxPhoneNo);
@@ -310,62 +330,43 @@
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(598, 285);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.Text = "Add Doctor & Nurse details";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // buttonDelete
-            // 
-            this.buttonDelete.Location = new System.Drawing.Point(496, 229);
-            this.buttonDelete.Name = "buttonDelete";
-            this.buttonDelete.Size = new System.Drawing.Size(75, 23);
-            this.buttonDelete.TabIndex = 14;
-            this.buttonDelete.Text = "Delete";
-            this.buttonDelete.UseVisualStyleBackColor = true;
-            // 
-            // buttonUpdate
-            // 
-            this.buttonUpdate.Location = new System.Drawing.Point(496, 137);
-            this.buttonUpdate.Name = "buttonUpdate";
-            this.buttonUpdate.Size = new System.Drawing.Size(75, 23);
-            this.buttonUpdate.TabIndex = 13;
-            this.buttonUpdate.Text = "Update";
-            this.buttonUpdate.UseVisualStyleBackColor = true;
             // 
             // buttonInsert
             // 
-            this.buttonInsert.Location = new System.Drawing.Point(496, 68);
+            this.buttonInsert.Location = new System.Drawing.Point(67, 255);
             this.buttonInsert.Name = "buttonInsert";
             this.buttonInsert.Size = new System.Drawing.Size(75, 23);
             this.buttonInsert.TabIndex = 12;
             this.buttonInsert.Text = "Insert";
             this.buttonInsert.UseVisualStyleBackColor = true;
+            this.buttonInsert.Click += new System.EventHandler(this.buttonInsert_Click_1);
             // 
-            // textBoxSpeciallity
+            // textBoxSpeciality
             // 
-            this.textBoxSpeciallity.Location = new System.Drawing.Point(100, 213);
-            this.textBoxSpeciallity.Name = "textBoxSpeciallity";
-            this.textBoxSpeciallity.Size = new System.Drawing.Size(100, 20);
-            this.textBoxSpeciallity.TabIndex = 11;
+            this.textBoxSpeciality.Location = new System.Drawing.Point(99, 229);
+            this.textBoxSpeciality.Name = "textBoxSpeciality";
+            this.textBoxSpeciality.Size = new System.Drawing.Size(100, 20);
+            this.textBoxSpeciality.TabIndex = 11;
             // 
             // textBoxAddress
             // 
-            this.textBoxAddress.Location = new System.Drawing.Point(100, 182);
+            this.textBoxAddress.Location = new System.Drawing.Point(111, 189);
             this.textBoxAddress.Name = "textBoxAddress";
             this.textBoxAddress.Size = new System.Drawing.Size(100, 20);
             this.textBoxAddress.TabIndex = 10;
-            this.textBoxAddress.TextChanged += new System.EventHandler(this.textBox4_TextChanged);
             // 
             // textBoxEmail
             // 
-            this.textBoxEmail.Location = new System.Drawing.Point(100, 157);
+            this.textBoxEmail.Location = new System.Drawing.Point(100, 121);
             this.textBoxEmail.Name = "textBoxEmail";
-            this.textBoxEmail.Size = new System.Drawing.Size(88, 20);
+            this.textBoxEmail.Size = new System.Drawing.Size(99, 20);
             this.textBoxEmail.TabIndex = 9;
-            this.textBoxEmail.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
             // textBoxPhoneNo
             // 
-            this.textBoxPhoneNo.Location = new System.Drawing.Point(100, 117);
+            this.textBoxPhoneNo.Location = new System.Drawing.Point(99, 156);
             this.textBoxPhoneNo.Name = "textBoxPhoneNo";
             this.textBoxPhoneNo.Size = new System.Drawing.Size(100, 20);
             this.textBoxPhoneNo.TabIndex = 8;
@@ -376,7 +377,6 @@
             this.textBoxName.Name = "textBoxName";
             this.textBoxName.Size = new System.Drawing.Size(100, 20);
             this.textBoxName.TabIndex = 7;
-            this.textBoxName.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // label13
             // 
@@ -386,7 +386,6 @@
             this.label13.Size = new System.Drawing.Size(52, 13);
             this.label13.TabIndex = 6;
             this.label13.Text = "Speciality";
-            this.label13.Click += new System.EventHandler(this.label13_Click);
             // 
             // label12
             // 
@@ -400,17 +399,16 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(41, 160);
+            this.label11.Location = new System.Drawing.Point(54, 124);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(32, 13);
             this.label11.TabIndex = 4;
             this.label11.Text = "Email";
-            this.label11.Click += new System.EventHandler(this.label11_Click);
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(47, 117);
+            this.label10.Location = new System.Drawing.Point(41, 164);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(52, 13);
             this.label10.TabIndex = 3;
@@ -428,7 +426,7 @@
             // radioButtondoctor
             // 
             this.radioButtondoctor.AutoSize = true;
-            this.radioButtondoctor.Location = new System.Drawing.Point(358, 42);
+            this.radioButtondoctor.Location = new System.Drawing.Point(131, 6);
             this.radioButtondoctor.Name = "radioButtondoctor";
             this.radioButtondoctor.Size = new System.Drawing.Size(57, 17);
             this.radioButtondoctor.TabIndex = 1;
@@ -439,7 +437,7 @@
             // radioButtonNurse
             // 
             this.radioButtonNurse.AutoSize = true;
-            this.radioButtonNurse.Location = new System.Drawing.Point(175, 42);
+            this.radioButtonNurse.Location = new System.Drawing.Point(44, 6);
             this.radioButtonNurse.Name = "radioButtonNurse";
             this.radioButtonNurse.Size = new System.Drawing.Size(53, 17);
             this.radioButtonNurse.TabIndex = 0;
@@ -447,27 +445,37 @@
             this.radioButtonNurse.Text = "Nurse";
             this.radioButtonNurse.UseVisualStyleBackColor = true;
             // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.loginbtn);
+            this.panel1.Controls.Add(this.textPassword);
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.textUsername);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Location = new System.Drawing.Point(12, 12);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(479, 99);
+            this.panel1.TabIndex = 7;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.loginbtn);
-            this.Controls.Add(this.textUsername);
-            this.Controls.Add(this.textPassword);
             this.Controls.Add(this.Exitbtn);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
             this.Name = "Form1";
             this.Text = "Clinic Information System";
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -494,7 +502,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Button Deletebtn;
-        private System.Windows.Forms.Button Updatebtn;
         private System.Windows.Forms.Button Insertbtn;
         private System.Windows.Forms.ComboBox comboBoxBlood;
         private System.Windows.Forms.Label label10;
@@ -504,14 +511,15 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox textBoxSpeciallity;
+        private System.Windows.Forms.TextBox textBoxSpeciality;
         private System.Windows.Forms.TextBox textBoxAddress;
         private System.Windows.Forms.TextBox textBoxEmail;
         private System.Windows.Forms.TextBox textBoxPhoneNo;
         private System.Windows.Forms.TextBox textBoxName;
-        private System.Windows.Forms.Button buttonDelete;
-        private System.Windows.Forms.Button buttonUpdate;
         private System.Windows.Forms.Button buttonInsert;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Button btnAppointment;
+        private System.Windows.Forms.Panel panel1;
     }
 }
 

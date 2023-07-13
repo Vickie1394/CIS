@@ -1,67 +1,247 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Data.SqlClient;
+using System.Windows.Forms;
 
 namespace CIS
 {
     public partial class Form1 : Form
     {
-        int PatientId = 0;
+        private string connectionString = @"Data Source=DESKTOP-A03Q2T3\SQLEXPRESS;Initial Catalog=CIS;Integrated Security=True;";
+
         public Form1()
         {
             InitializeComponent();
+            textPassword.UseSystemPasswordChar = true; // Use system password character
         }
 
-        //Connection String
-        string cs = @"Data Source=DESKTOP-A03Q2T3\SQLEXPRESS;
-Initial Catalog=CIS;Integrated Security=True;";
-        //btn_Login Click event
         private void loginbtn_Click(object sender, EventArgs e)
         {
-            if (textUsername.Text == "" || textPassword.Text == "")
+            if (string.IsNullOrWhiteSpace(textUsername.Text) || string.IsNullOrWhiteSpace(textPassword.Text))
             {
-                MessageBox.Show("Please provide UserName and Password");
+                MessageBox.Show("Please provide username and password.");
                 return;
             }
+
             try
             {
-                //Create SqlConnection
-                SqlConnection con = new SqlConnection(cs);
-                SqlCommand cmd = new SqlCommand("Select * from Admin where Username=@username and Password=@password", con);
-                cmd.Parameters.AddWithValue("@username", textUsername.Text);
-                cmd.Parameters.AddWithValue("@password", textPassword.Text);
-                con.Open();
-                SqlDataAdapter adapt = new SqlDataAdapter(cmd);
-                DataSet ds = new DataSet();
-                adapt.Fill(ds);
-                con.Close();
-                int count = ds.Tables[0].Rows.Count;
-                //If count is equal to 1, than show mainform
-                if (count == 1)
+                using (SqlConnection con = new SqlConnection(connectionString))
                 {
-                    MessageBox.Show("Login Successful!");
-                    this.Hide();
-                    tabControl1.SelectTab(1);
-                    tabControl1.Enabled = true;
-                }
-                else
-                {
-                    MessageBox.Show("Login Failed!");
-                    tabControl1.SelectTab(0);
-                    tabControl1.Enabled = false;
+                    string query = "SELECT COUNT(*) FROM Admin WHERE Username=@username AND Password=@password";
+                    SqlCommand cmd = new SqlCommand(query, con);
+                    cmd.Parameters.AddWithValue("@username", textUsername.Text);
+                    cmd.Parameters.AddWithValue("@password", textPassword.Text);
+                    con.Open();
+                    int count = (int)cmd.ExecuteScalar();
+                    con.Close();
+
+                    if (count == 1)
+                    {
+                        MessageBox.Show("Login successful!");
+                        tabControl1.Visible = true;
+                        tabControl1.SelectTab(1);
+                        tabControl1.Enabled = true;
+                        panel1.Visible = false;
+
+
+                        // Clear login details
+                        textUsername.Text = "";
+                        textPassword.Text = "";
+                    }
+                    else
+                    {
+                        MessageBox.Show("Login failed!");
+                        tabControl1.Visible = false;
+                        tabControl1.SelectTab(0);
+                       tabControl1.Enabled = false;
+                       
+
+                    }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("An error occurred: " + ex.Message);
             }
+        }
+
+        private void Insertbtn_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(textName.Text) || string.IsNullOrWhiteSpace(textPhoneNo.Text) ||
+                string.IsNullOrWhiteSpace(textTreatment.Text) || comboBoxGender.SelectedItem == null ||
+                string.IsNullOrWhiteSpace(textEmail.Text) || comboBoxBlood.SelectedItem == null)
+            {
+                MessageBox.Show("Please provide all details.");
+                return;
+            }
+
+            try
+            {
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    string query = "INSERT INTO Patient (PatientId, Name, PhoneNo, TreatmentDetails, Gender, Email, BloodGroup) " +
+                        "VALUES (@patientId, @name, @phoneNo, @treatmentDetails, @gender, @email, @bloodGroup)";
+
+                    Guid patientId = Guid.NewGuid();
+
+                    SqlCommand cmd = new SqlCommand(query, con);
+                    cmd.Parameters.AddWithValue("@patientId", patientId);
+                    cmd.Parameters.AddWithValue("@name", textName.Text);
+                    cmd.Parameters.AddWithValue("@phoneNo", textPhoneNo.Text);
+                    cmd.Parameters.AddWithValue("@treatmentDetails", textTreatment.Text);
+                    cmd.Parameters.AddWithValue("@gender", comboBoxGender.SelectedItem);
+                    cmd.Parameters.AddWithValue("@email", textEmail.Text);
+                    cmd.Parameters.AddWithValue("@bloodGroup", comboBoxBlood.SelectedItem);
+
+                    con.Open();
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    con.Close();
+
+                    if (rowsAffected > 0)
+                    {
+                        MessageBox.Show("Data inserted. Patient ID: " + patientId);
+                        DisplayPatientData();
+                        ClearPatientData();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to insert data.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message);
+            }
+        }
+
+        private void Deletebtn_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                DialogResult result = MessageBox.Show("Are you sure you want to delete the selected rows?",
+                    "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                if (result == DialogResult.Yes)
+                {
+                    try
+                    {
+                        using (SqlConnection con = new SqlConnection(connectionString))
+                        {
+                            string query = "DELETE FROM Patient WHERE PatientId=@patientId";
+
+                            SqlCommand cmd = new SqlCommand(query, con);
+                            con.Open();
+
+                            foreach (DataGridViewRow row in dataGridView1.SelectedRows)
+                            {
+                                Guid patientId = (Guid)row.Cells["PatientId"].Value;
+                                cmd.Parameters.Clear();
+                                cmd.Parameters.AddWithValue("@patientId", patientId);
+                                cmd.ExecuteNonQuery();
+                            }
+
+                            con.Close();
+                            MessageBox.Show("Selected rows deleted.");
+                            DisplayPatientData();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("An error occurred: " + ex.Message);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select at least one row to delete.");
+            }
+        }
+
+        private void buttonInsert_Click_1(object sender, EventArgs e)
+
+        {
+            SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-A03Q2T3\SQLEXPRESS;Initial Catalog=CIS;Integrated Security=True;");
+            try
+            {
+                con.Open();
+
+                SqlCommand cmd;
+
+                if (radioButtonNurse.Checked == true)
+                {
+                    cmd = new SqlCommand("INSERT INTO Nurse (NurseId, Name, Email, PhoneNo, Address, Speciality) VALUES (@nurseId, @name, @email, @phoneNo, @address, @speciality)", con);
+                }
+                else
+                {
+                    cmd = new SqlCommand("INSERT INTO Doctor (DoctorId, Name, Email, PhoneNo, Speciality) VALUES (@doctorId, @name, @email, @phoneNo, @speciality)", con);
+                }
+
+                Guid id = Guid.NewGuid();
+                cmd.Parameters.AddWithValue("@nurseId", id); // Replace with appropriate column name
+                cmd.Parameters.AddWithValue("@doctorId", id); // Replace with appropriate column name
+                cmd.Parameters.AddWithValue("@name", textBoxName.Text);
+                cmd.Parameters.AddWithValue("@email", textBoxEmail.Text);
+                cmd.Parameters.AddWithValue("@phoneNo", textBoxPhoneNo.Text);
+                cmd.Parameters.AddWithValue("@address", textBoxAddress.Text);
+                cmd.Parameters.AddWithValue("@speciality", textBoxSpeciality.Text);
+                cmd.ExecuteNonQuery();
+
+                MessageBox.Show("Data inserted successfully. Nurse/Doctor Id: " + id);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error occurred: " + ex.Message);
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+
+        private void DisplayPatientData()
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    string query = "SELECT * FROM Patient";
+                    SqlCommand cmd = new SqlCommand(query, con);
+                    SqlDataAdapter adapt = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    adapt.Fill(dt);
+                    dataGridView1.DataSource = dt;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message);
+            }
+        }
+        private void ClearPatientData()
+        {
+            textName.Text = "";
+            textPhoneNo.Text = "";
+            textTreatment.Text = "";
+            comboBoxGender.Text = "";
+            textEmail.Text = "";
+            comboBoxBlood.Text = "";
+        }
+
+
+
+        private void ClearNurseDoctorData()
+        {
+            textBoxName.Text = "";
+            textBoxPhoneNo.Text = "";
+            textBoxEmail.Text = "";
+            textBoxSpeciality.Text = "";
+        }
+
+        private void textPassword_TextChanged(object sender, EventArgs e)
+        {
+            textPassword.UseSystemPasswordChar = true; // Use system password character
         }
 
         private void Exitbtn_Click(object sender, EventArgs e)
@@ -69,125 +249,13 @@ Initial Catalog=CIS;Integrated Security=True;";
             Application.Exit();
         }
 
-        private void Insertbtn_Click(object sender, EventArgs e)
+        private void btnAppointment_Click(object sender, EventArgs e)
         {
-            SqlConnection con = new SqlConnection(@"Data Source = DESKTOP - A03Q2T3\SQLEXPRESS;
-            Initial Catalog = CIS; Integrated Security = True; ");
-            SqlCommand cmd;
-            SqlDataAdapter adapt;
-
-            if (textName.Text != "" && textPhoneNo.Text != "" && textTreatment.Text != "" && comboBoxGender.SelectedItem != "" && textEmail.Text != "" && comboBoxBlood.SelectedItem != "")
-            {
-                cmd = new SqlCommand("insert into Patient (Name,PhoneNo,TreatmentDetails,Gender,Email, BloodGroup) values(@name,@phoneNo, @treatmentDetails,@sex,@Email, @bloodGroup)", con);
-                con.Open();
-                cmd.Parameters.AddWithValue("@name", textName.Text);
-                cmd.Parameters.AddWithValue("@PhoneNo", textPhoneNo.Text);
-                cmd.Parameters.AddWithValue("treatment", textTreatment.Text);
-                cmd.Parameters.AddWithValue("@gender", comboBoxGender.SelectedItem);
-                cmd.Parameters.AddWithValue("@email", textEmail.Text);
-                cmd.Parameters.AddWithValue("@blood", comboBoxBlood.SelectedItem);
-                cmd.ExecuteNonQuery();
-                con.Close();
-                MessageBox.Show("Record Inserted Successfully");
-                DisplayData();
-                ClearData();
-            }
-            else
-            {
-                MessageBox.Show("Please Provide Details!");
-            }
+            Appointment appointmentForm = new Appointment();
+            appointmentForm.Show();
         }
 
-        private void DisplayData()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void ClearData()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void Updatebtn_Click(object sender, EventArgs e)
-        {
-
-            SqlConnection con = new SqlConnection(@"Data Source = DESKTOP - A03Q2T3\SQLEXPRESS;
-            Initial Catalog = CIS; Integrated Security = True; ");
-            SqlCommand cmd;
-            SqlDataAdapter adapt;
-            {
-                if (textName.Text != "" && textPhoneNo.Text != "" && textTreatment.Text != "" && comboBoxGender.SelectedItem != "" && textEmail.Text != "" && comboBoxBlood.SelectedItem != "")
-                {
-                    cmd = new SqlCommand("update Patient set Name=@name,PhoneNo=@phoneNo,Treatment= @treatment,Gender=@gender, Email=@email,Bloodgroup=@bloodGroup where PatiendId=@patientId", con);
-                    con.Open();
-                    cmd.Parameters.AddWithValue("@patientId", PatientId);
-                    cmd.Parameters.AddWithValue("@name", textName.Text);
-                    cmd.Parameters.AddWithValue("@PhoneNo", textPhoneNo.Text);
-                    cmd.Parameters.AddWithValue("treatment", textTreatment.Text);
-                    cmd.Parameters.AddWithValue("@gender", comboBoxGender.SelectedItem);
-                    cmd.Parameters.AddWithValue("@email", textEmail.Text);
-                    cmd.Parameters.AddWithValue("@blood", comboBoxBlood.SelectedItem);
-                    cmd.ExecuteNonQuery();
-                    cmd.ExecuteNonQuery();
-                    MessageBox.Show("Record Updated Successfully");
-                    con.Close();
-                    DisplayData();
-                    ClearData();
-                }
-                else
-                {
-                    MessageBox.Show("Please Select Record to Update");
-                }
-            }
-        }
-
-        private void Deletebtn_Click(object sender, EventArgs e)
-        {
-
-            SqlConnection con = new SqlConnection(@"Data Source = DESKTOP - A03Q2T3\SQLEXPRESS;
-            Initial Catalog = CIS; Integrated Security = True; ");
-            SqlCommand cmd;
-            SqlDataAdapter adapt;
-            if (PatientId != 0)
-            {
-                cmd = new SqlCommand("delete tbl_Record where ID=@id", con);
-                con.Open();
-                cmd.Parameters.AddWithValue("@patientId", PatientId);
-                cmd.ExecuteNonQuery();
-                con.Close();
-                MessageBox.Show("Record Deleted Successfully!");
-                DisplayData();
-                ClearData();
-            }
-            else
-            {
-                MessageBox.Show("Please Select Record to Delete");
-            }
-        }
-
-        private void label13_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label11_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox4_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox3_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+       
     }
-}
+    }
+
