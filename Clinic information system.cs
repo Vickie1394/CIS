@@ -15,7 +15,7 @@ namespace CIS
             textPassword.UseSystemPasswordChar = true; // Use system password character
         }
 
-        private void loginbtn_Click(object sender, EventArgs e)
+        private void loginbtn_Click(object sender, EventArgs e)  
         {
             if (string.IsNullOrWhiteSpace(textUsername.Text) || string.IsNullOrWhiteSpace(textPassword.Text))
             {
